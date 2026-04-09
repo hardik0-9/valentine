@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffe6e6;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #main-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #d10047;
+            font-size: 3rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            font-size: 1.5rem;
+            padding: 15px 40px;
+            margin: 10px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        #yes-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #no-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #punishment-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #punishment-container img {
+            max-width: 400px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        #punishment-container h2 {
+            color: #000;
+            font-size: 3.5rem;
+            margin-top: 20px;
+            font-family: Impact, sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px red;
+        }
+
+        .credit {
+            position: fixed;
+            bottom: 10px;
+            right: 15px;
+            font-size: 1rem;
+            color: #555;
+            font-family: Arial, sans-serif;
+        }
+        
+        #success-container {
+            display: none;
+            color: #d10047;
+            animation: bounceIn 0.8s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.1); opacity: 0; }
+            60% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        #success-container h2 {
+            font-size: 4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-container">
+        <h1>Will you be my valentine? 💖</h1>
+        <div>
+            <button id="yes-btn" class="btn">Yes</button>
+            <button id="no-btn" class="btn">No</button>
+        </div>
+    </div>
+
+    <div id="punishment-container">
+        <!-- Using the generated image from the workspace -->
+        <img src="cat.png" alt="Cat holding gun" />
+        <h2>Don't mess with me.</h2>
+    </div>
+
+    <div id="success-container">
+        <h2>Yay! I knew it! 🥰</h2>
+    </div>
+
+    <div class="credit">Made by Harshit</div>
+
+    <script>
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const mainContainer = document.getElementById('main-container');
+        const punishmentContainer = document.getElementById('punishment-container');
+        const successContainer = document.getElementById('success-container');
+        
+        let attempts = 0;
+        const maxAttempts = 6;
+
+        function moveButton() {
+            attempts++;
+            if (attempts >= maxAttempts) {
+                // Remove the button entirely so it doesn't get clicked again
+                noBtn.style.display = 'none';
+                // Hide main container and show the punishment picture!
+                mainContainer.style.display = 'none';
+                punishmentContainer.style.display = 'flex';
+                // Change background to look scary
+                document.body.style.backgroundColor = '#111';
+                document.querySelector('.credit').style.color = '#555';
+                return;
+            }
+
+            // Change to fixed positioning first time we move it so it escapes the flow
+            noBtn.style.position = 'fixed';
+            
+            // Get viewport dimensions
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            // Get button dimensions
+            const btnRect = noBtn.getBoundingClientRect();
+            const btnWidth = btnRect.width;
+            const btnHeight = btnRect.height;
+            
+            // Calculate random positions ensuring button stays within viewport
+            // Subtract button size + padding to prevent overflowing
+            const padding = 20;
+            const randomX = padding + Math.random() * (viewportWidth - btnWidth - padding * 2);
+            const randomY = padding + Math.random() * (viewportHeight - btnHeight - padding * 2);
+
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        }
+
+        // Trigger on mouseover (desktop hover)
+        noBtn.addEventListener('mousemove', () => {
+            // Add a small delay/threshold if needed, but instant is funnier
+            moveButton();
+        });
+
+        // Trigger on click (mainly for touch devices or if they manage to grab it)
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent click logic on touch
+            moveButton();
+        });
+        
+        noBtn.addEventListener('click', moveButton);
+
+        yesBtn.addEventListener('click', () => {
+            mainContainer.style.display = 'none';
+            successContainer.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
