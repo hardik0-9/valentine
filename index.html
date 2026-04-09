@@ -236,20 +236,18 @@
 
             // Flowers shower
             const flowers = ['🌸', '🌺', '🌻', '🌹', '🌷', '🌼', '💐'];
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const flower = document.createElement('div');
-                    flower.classList.add('flower');
-                    flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
-                    flower.style.left = Math.random() * 100 + 'vw';
-                    flower.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                    document.body.appendChild(flower);
+            setInterval(() => {
+                const flower = document.createElement('div');
+                flower.classList.add('flower');
+                flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+                flower.style.left = Math.random() * 100 + 'vw';
+                flower.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(flower);
 
-                    setTimeout(() => {
-                        flower.remove();
-                    }, 5000);
-                }, i * 100);
-            }
+                setTimeout(() => {
+                    flower.remove();
+                }, 5000);
+            }, 100);
         });
     </script>
 </body>
